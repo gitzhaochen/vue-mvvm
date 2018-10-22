@@ -1,0 +1,62 @@
+```
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="app">
+    <input type="text" v-model="text">
+    {{text}}
+</div>
+<script>
+    function compile(node,vm) {
+        let reg=/\{\{(.*)\}\}/;
+        //节点是元素
+        if(node.nodeType===1){
+            let attrs=[...node.attributes];//类数组转真数组
+            attrs.forEach((attr,i,attrs)=>{
+                let name=attr.nodeValue;
+                node.value=vm.data[name];
+                node.removeAttribute('v-model');
+            })
+        }
+        //节点是文本
+        if(node.nodeType===3){
+            if(reg.test(node.nodeValue)){
+                let name = RegExp.$1;
+                name=name.trim();
+                node.nodeValue=vm.data[name]
+            }
+        }
+    }
+    function nodeToFragment(node,vm) {
+        let flag=document.createDocumentFragment();//创建文档碎片
+        let child;
+        while(child=node.firstChild){
+            //appendChild 成功后，会把节点从原来的节点位置移除；
+            //参考 https://developer.mozilla.org/zh-CN/docs/Web/API/Node/appendChild
+            compile(child,vm)
+            flag.appendChild(child)
+        }
+        return flag
+    }
+    function Vue(options) {
+        this.data=options.data;
+        let id=options.el;
+        let dom=nodeToFragment(document.getElementById(id),this);
+        document.getElementById(id).appendChild(dom)
+    }
+    let VM=new Vue({
+        el:'app',
+        data:{
+            text:'hello world'
+        }
+    })
+</script>
+</body>
+</html>
+
+```
