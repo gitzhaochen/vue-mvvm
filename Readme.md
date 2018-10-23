@@ -6,6 +6,6 @@
     - 如果节点类型是文本，添加订阅者watcher，当数据变化同步更新nodeValue
 3. input输入变化 -- 触发Object.defineProperty set() -- set发出更新通知dep.notify() -- 订阅者收到通知并更新 watcher.update()
 
-- [数据初始化绑定，编译模版](./bind-compile.md)
-- [响应式的数据绑定，输入框变化同步更新data值](./view-to-model.md)
-- [订阅/发布模式，data更新同步视图](./publiser-watcher.md)
+- [数据初始化绑定，编译模版](./bind-compile.html)
+- [响应式的数据绑定，输入框变化同步更新data值](./view-to-model.html)
+- [订阅/发布模式，data更新同步视图](./publiser-watcher.html)
